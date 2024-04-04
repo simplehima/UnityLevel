@@ -1,30 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    public Text ScoreText;
-    public int score = 0;
-    public int maxScore;
-    // Start is called before the first frame update
-    void Start()
+    public Text scoreText;
+    private int score = 0;
+
+    // Update the score text display
+    public void UpdateScoreText()
     {
-        score = 0;
+        scoreText.text = "Score: " + score;
     }
 
+    // Add score
     public void AddScore(int newScore)
     {
         score += newScore;
-    }
-    public void UpdateScore()
-    {
-        ScoreText.text = "Score: 0" + score;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        UpdateScore();
+        UpdateScoreText();
     }
 }

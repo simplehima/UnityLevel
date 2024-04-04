@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Bullet : MonoBehaviour
 {
     public float life = 3;
+    private HashSet<GameObject> hitCubes = new HashSet<GameObject>(); // Track cubes already hit
 
     void Awake()
     {
@@ -14,16 +13,18 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Destroy(collision.gameObject);
-        Destroy(gameObject);
-
-        // Check if the collided object has a ScoreManager component
-        ScoreManager cubeScoreManager = collision.gameObject.GetComponent<ScoreManager>();
-        if (cubeScoreManager != null)
+        if (collision.gameObject.CompareTag("Target") && !hitCubes.Contains(collision.gameObject))
         {
-            // If it does, increase the score
-            cubeScoreManager.AddScore(1);
-            cubeScoreManager.UpdateScore(); // Update the score display
+            Destroy(collision.gameObject); // Destroy the cube
+            hitCubes.Add(collision.gameObject); // Add cube to the set of hit cubes
+            Destroy(gameObject); // Destroy the bullet
+
+            ScoreManager scoreManager = collision.transform.root.GetComponentInChildren<ScoreManager>(); // Get ScoreManager from the cube's parent
+
+            if (scoreManager != null)
+            {
+                scoreManager.AddScore(1); // Increase the score
+            }
         }
     }
 }
