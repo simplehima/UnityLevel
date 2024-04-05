@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // Added for SceneManager
 
 public class ScoreManager : MonoBehaviour
 {
@@ -10,6 +11,12 @@ public class ScoreManager : MonoBehaviour
     public void UpdateScoreText()
     {
         scoreText.text = "Score: " + score;
+
+        // Check if the score reaches 10
+        if (score >= 10)
+        {
+            OpenLevel2();
+        }
     }
 
     // Add score
@@ -17,5 +24,11 @@ public class ScoreManager : MonoBehaviour
     {
         score += newScore;
         UpdateScoreText();
+    }
+
+    // Load Level2 scene
+    private void OpenLevel2()
+    {
+        SceneManager.LoadScene("Level2");
     }
 }
